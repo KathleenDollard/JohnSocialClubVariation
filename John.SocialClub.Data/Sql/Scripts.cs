@@ -15,28 +15,28 @@ namespace John.SocialClub.Data.Sql
         /// Sql to get a club member details by Id
         /// </summary>
         public static readonly string sqlGetClubMemberById = "Select" +
-            " Id, Name, DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren" +
+            " Id, GivenName, MiddleName, LastName, DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren" +
             " From ClubMember Where Id = @Id";
 
         /// <summary>
         /// Sql to get all club members
         /// </summary>
         public static readonly string SqlGetAllClubMembers = "Select" +
-            " Id, Name, DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren" +
+            " Id,  GivenName, MiddleName, LastName,  DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren" +
             " From ClubMember";
 
         /// <summary>
         /// sql to insert a club member details
         /// </summary>
         public static readonly string SqlInsertClubMember = "Insert Into" +
-            " ClubMember(Name, DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren)" +
-            " Values(@Name, @DateOfBirth, @Occupation, @MaritalStatus, @HealthStatus, @Salary, @NumberOfChildren)";
+            " ClubMember( GivenName, MiddleName, LastName,  DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren)" +
+            " Values(@GivenName, @MiddleName, @LastName,  @DateOfBirth, @Occupation, @MaritalStatus, @HealthStatus, @Salary, @NumberOfChildren)";
 
         /// <summary>
         /// sql to search for club members
         /// </summary>
         public static readonly string SqlSearchClubMembers = "Select " +
-            " Id, Name, DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren" +
+            " Id,  GivenName, MiddleName, LastName,  DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren" +
             " From ClubMember Where (@Occupation Is NULL OR @Occupation = Occupation) {0}" +
             " (@MaritalStatus Is NULL OR @MaritalStatus = MaritalStatus)";
 
@@ -44,7 +44,7 @@ namespace John.SocialClub.Data.Sql
         /// sql to update club member details
         /// </summary>
         public static readonly string sqlUpdateClubMember = "Update ClubMember " +
-            " Set [Name] = @Name, [DateOfBirth] = @DateOfBirth, [Occupation] = @Occupation, [MaritalStatus] = @MaritalStatus, " +
+            " Set [FirstName] = @GivenName,[MiddleName] = @MiddleName, [LastName] = @LastName,  [DateOfBirth] = @DateOfBirth, [Occupation] = @Occupation, [MaritalStatus] = @MaritalStatus, " +
             " [HealthStatus] = @HealthStatus, [Salary] = @Salary, [NumberOfChildren] = @NumberOfChildren Where ([Id] = @Id)";
 
         /// <summary>

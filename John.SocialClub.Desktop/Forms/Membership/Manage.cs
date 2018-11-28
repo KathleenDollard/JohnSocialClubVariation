@@ -8,6 +8,7 @@ namespace John.SocialClub.Desktop.Forms.Membership
 {
     using System;
     using System.Data;
+    using System.Data.SqlClient;
     using System.Drawing;
     using System.Drawing.Printing;
     using System.Windows.Forms;
@@ -25,7 +26,7 @@ namespace John.SocialClub.Desktop.Forms.Membership
         /// Instance of DataGridViewPrinter
         /// </summary>
         private DataGridViewPrinter dataGridViewPrinter;
-        
+
         /// <summary>
         /// Interface of ClubMemberService
         /// </summary>
@@ -109,7 +110,7 @@ namespace John.SocialClub.Desktop.Forms.Membership
         /// </summary>
         private void ResetRegistration()
         {
-            txtName.Text = string.Empty;
+            txtFirstName.Text = string.Empty;
             txtSalary.Text = string.Empty;
             txtNoOfChildren.Text = string.Empty;
             cmbOccupation.SelectedIndex = -1;
@@ -148,7 +149,7 @@ namespace John.SocialClub.Desktop.Forms.Membership
         {            
             errorMessage = string.Empty;
 
-            if (txtName.Text.Trim() == string.Empty)
+            if (txtFirstName.Text.Trim() == string.Empty)
             {
                 AddErrorMessage(Resources.Registration_Name_Required_Text);
             }
@@ -308,7 +309,9 @@ namespace John.SocialClub.Desktop.Forms.Membership
                     var clubMemberModel = new ClubMemberModel()
                     {
                         Id = 0,
-                        Name = txtName.Text.Trim(),
+                        FirstName = txtFirstName.Text.Trim(),
+                        MiddleName = txtMiddleName.Text.Trim(),
+                        LastName = txtLastName.Text.Trim(),
                         DateOfBirth = dtDateOfBirth.Value,
                         Occupation = (Occupation)cmbOccupation.SelectedValue,
                         HealthStatus = (HealthStatus)cmbHealthStatus.SelectedValue,
@@ -660,7 +663,9 @@ namespace John.SocialClub.Desktop.Forms.Membership
                     var clubMemberModel = new ClubMemberModel()
                     {
                         Id = memberId,
-                        Name = txt2Name.Text.Trim(),
+                        FirstName = txtFirstName.Text.Trim(),
+                        MiddleName = txtMiddleName.Text.Trim(),
+                        LastName = txtLastName.Text.Trim(),
                         DateOfBirth = dt2DateOfBirth.Value,
                         Occupation = (Occupation)cmb2Occupation.SelectedValue,
                         HealthStatus = (HealthStatus)cmb2HealthStatus.SelectedValue,

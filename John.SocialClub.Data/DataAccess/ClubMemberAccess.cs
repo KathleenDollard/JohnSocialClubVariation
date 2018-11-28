@@ -6,11 +6,11 @@
 
 namespace John.SocialClub.Data.DataAccess
 {
-    using System;
-    using System.Data;
-    using System.Data.OleDb;
     using John.SocialClub.Data.DataModel;
     using John.SocialClub.Data.Sql;
+    using System;
+    using System.Data;
+    using System.Data.SqlClient;
 
     /// <summary>
     /// Data access class for ClubMember table
@@ -25,23 +25,14 @@ namespace John.SocialClub.Data.DataAccess
         {
             var dataTable = new DataTable();
 
-            using (var oleDbDataAdapter = new OleDbDataAdapter())
+            using (var dataAdapter = new SqlDataAdapter(Scripts.SqlGetAllClubMembers, ConnectionString))
             {
-                // Create the command and set its properties
-                oleDbDataAdapter.SelectCommand = new OleDbCommand
-                {
-                    Connection = new OleDbConnection(ConnectionString),
-                    CommandType = CommandType.Text,
-
-                    // Assign the SQL to the command object
-                    CommandText = Scripts.SqlGetAllClubMembers
-                };
 
                 // Fill the datatable from adapter
-                oleDbDataAdapter.Fill(dataTable);
+                dataAdapter.Fill(dataTable);
             }
 
-            return dataTable;            
+            return dataTable;
         }
 
         /// <summary>
@@ -54,16 +45,8 @@ namespace John.SocialClub.Data.DataAccess
             var dataTable = new DataTable();
             DataRow dataRow;
 
-            using (var dataAdapter = new OleDbDataAdapter())
+            using (var dataAdapter = new SqlDataAdapter(Scripts.sqlGetClubMemberById, ConnectionString))
             {
-                // Create the command and set its properties
-                dataAdapter.SelectCommand = new OleDbCommand
-                {
-                    Connection = new OleDbConnection(ConnectionString),
-                    CommandType = CommandType.Text,
-                    CommandText = Scripts.sqlGetClubMemberById
-                };
-
                 // Add the parameter to the parameter collection
                 dataAdapter.SelectCommand.Parameters.AddWithValue("@Id", id);
 
@@ -88,12 +71,12 @@ namespace John.SocialClub.Data.DataAccess
         {
             var dataTable = new DataTable();
 
-            using (var oleDbDataAdapter = new OleDbDataAdapter())
+            using (var sqlDataAdapter = new SqlDataAdapter())
             {
                 // Create the command and set its properties
-                oleDbDataAdapter.SelectCommand = new OleDbCommand
+                sqlDataAdapter.SelectCommand = new SqlCommand
                 {
-                    Connection = new OleDbConnection(ConnectionString),
+                    Connection = new SqlConnection(ConnectionString),
                     CommandType = CommandType.Text,
 
                     // Assign the SQL to the command object
@@ -101,15 +84,15 @@ namespace John.SocialClub.Data.DataAccess
                 };
 
                 // Add the input parameters to the parameter collection
-                oleDbDataAdapter.SelectCommand.Parameters.AddWithValue("@Occupation", occupation == null ? DBNull.Value : occupation);
-                oleDbDataAdapter.SelectCommand.Parameters.AddWithValue("@MaritalStatus", maritalStatus == null ? DBNull.Value : maritalStatus);
+                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@Occupation", occupation == null ? DBNull.Value : occupation);
+                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@MaritalStatus", maritalStatus == null ? DBNull.Value : maritalStatus);
 
                 // Fill the table from adapter
-                oleDbDataAdapter.Fill(dataTable);
+                sqlDataAdapter.Fill(dataTable);
             }
 
             return dataTable;
-        }        
+        }
 
         /// <summary>
         /// Method to add new member
@@ -118,26 +101,28 @@ namespace John.SocialClub.Data.DataAccess
         /// <returns>true or false</returns>
         public bool AddClubMember(ClubMemberModel clubMember)
         {
-            using (var oleDbCommand = new OleDbCommand())
+            using (var sqlCommand = new SqlCommand())
             {
                 // Set the command object properties
-                oleDbCommand.Connection = new OleDbConnection(ConnectionString);
-                oleDbCommand.CommandType = CommandType.Text;
-                oleDbCommand.CommandText = Scripts.SqlInsertClubMember;
+                sqlCommand.Connection = new SqlConnection(ConnectionString);
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.CommandText = Scripts.SqlInsertClubMember;
 
                 // Add the input parameters to the parameter collection
-                oleDbCommand.Parameters.AddWithValue("@Name", clubMember.Name);
-                oleDbCommand.Parameters.AddWithValue("@DateOfBirth", clubMember.DateOfBirth.ToShortDateString());
-                oleDbCommand.Parameters.AddWithValue("@Occupation", (int)clubMember.Occupation);
-                oleDbCommand.Parameters.AddWithValue("@MaritalStatus", (int)clubMember.MaritalStatus);
-                oleDbCommand.Parameters.AddWithValue("@HealthStatus", (int)clubMember.HealthStatus);
-                oleDbCommand.Parameters.AddWithValue("@Salary", clubMember.Salary);
-                oleDbCommand.Parameters.AddWithValue("@NumberOfChildren", clubMember.NumberOfChildren);
+                sqlCommand.Parameters.AddWithValue("@FirstName", clubMember.FirstName);
+                sqlCommand.Parameters.AddWithValue("@MiddleName", clubMember.MiddleName);
+                sqlCommand.Parameters.AddWithValue("@LastName", clubMember.LastName);
+                sqlCommand.Parameters.AddWithValue("@DateOfBirth", clubMember.DateOfBirth.ToShortDateString());
+                sqlCommand.Parameters.AddWithValue("@Occupation", (int)clubMember.Occupation);
+                sqlCommand.Parameters.AddWithValue("@MaritalStatus", (int)clubMember.MaritalStatus);
+                sqlCommand.Parameters.AddWithValue("@HealthStatus", (int)clubMember.HealthStatus);
+                sqlCommand.Parameters.AddWithValue("@Salary", clubMember.Salary);
+                sqlCommand.Parameters.AddWithValue("@NumberOfChildren", clubMember.NumberOfChildren);
 
                 // Open the connection, execute the query and close the connection
-                oleDbCommand.Connection.Open();
-                var rowsAffected = oleDbCommand.ExecuteNonQuery();
-                oleDbCommand.Connection.Close();
+                sqlCommand.Connection.Open();
+                var rowsAffected = sqlCommand.ExecuteNonQuery();
+                sqlCommand.Connection.Close();
 
                 return rowsAffected > 0;
             }
@@ -150,15 +135,17 @@ namespace John.SocialClub.Data.DataAccess
         /// <returns>true / false</returns>
         public bool UpdateClubMember(ClubMemberModel clubMember)
         {
-            using (var dbCommand = new OleDbCommand())
+            using (var dbCommand = new SqlCommand())
             {
                 // Set the command object properties
-                dbCommand.Connection = new OleDbConnection(ConnectionString);
+                dbCommand.Connection = new SqlConnection(ConnectionString);
                 dbCommand.CommandType = CommandType.Text;
                 dbCommand.CommandText = Scripts.sqlUpdateClubMember;
 
                 // Add the input parameters to the parameter collection
-                dbCommand.Parameters.AddWithValue("@Name", clubMember.Name);
+                dbCommand.Parameters.AddWithValue("@FirstName", clubMember.FirstName);
+                dbCommand.Parameters.AddWithValue("@MiddleName", clubMember.MiddleName);
+                dbCommand.Parameters.AddWithValue("@LastName", clubMember.LastName);
                 dbCommand.Parameters.AddWithValue("@DateOfBirth", clubMember.DateOfBirth.ToShortDateString());
                 dbCommand.Parameters.AddWithValue("@Occupation", (int)clubMember.Occupation);
                 dbCommand.Parameters.AddWithValue("@MaritalStatus", (int)clubMember.MaritalStatus);
@@ -183,10 +170,10 @@ namespace John.SocialClub.Data.DataAccess
         /// <returns>true / false</returns>
         public bool DeleteClubMember(int id)
         {
-            using (var dbCommand = new OleDbCommand())
+            using (var dbCommand = new SqlCommand())
             {
                 // Set the command object properties
-                dbCommand.Connection = new OleDbConnection(ConnectionString);
+                dbCommand.Connection = new SqlConnection(ConnectionString);
                 dbCommand.CommandType = CommandType.Text;
                 dbCommand.CommandText = Scripts.sqlDeleteClubMember;
 

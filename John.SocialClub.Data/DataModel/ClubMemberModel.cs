@@ -19,10 +19,9 @@ namespace John.SocialClub.Data.DataModel
         /// </summary>
         public int Id { get; set; }
 
-        /// <summary>
-        /// Gets or sets member name
-        /// </summary>
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
         /// Gets or sets date of birth

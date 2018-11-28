@@ -47,7 +47,8 @@ namespace John.SocialClub.Desktop
         /// <param name="e">event data</param>
         private void Login_Click(object sender, EventArgs e)
         {
-            if (txtUsername.Text.Trim() == Settings.Default.Username && txtPassword.Text.Trim() == Settings.Default.Password)
+            if (txtUsername.Text.Trim() == Settings.Default.Username &&
+                txtPassword.Text.Trim() == Settings.Default.Password)
             {
                 var frmManage = new Manage();
                 frmManage.Show();
