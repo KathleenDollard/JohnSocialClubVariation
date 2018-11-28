@@ -62,6 +62,7 @@ namespace DataUtils
 
         public static bool Update<T, TKey>(string script, string connectionString, 
                 T model, Action<SqlCommand, T> fillParams)
+            where TKey : struct
             where T : IHasPrimaryKey<TKey>
         {
             using (var sqlCommand = new SqlCommand())
@@ -72,6 +73,24 @@ namespace DataUtils
 
                 fillParams(sqlCommand, model);
                 sqlCommand.Parameters.AddWithValue("@Id", model.Id);
+
+                sqlCommand.Connection.Open();
+                int rowsAffected = sqlCommand.ExecuteNonQuery();
+                sqlCommand.Connection.Close();
+
+                return rowsAffected > 0;
+            }
+        }
+
+        public static bool Delete(string script, string connectionString, int id)
+        {
+            using (var sqlCommand = new SqlCommand())
+            {
+                sqlCommand.Connection = new SqlConnection(connectionString);
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.CommandText = script;
+
+                sqlCommand.Parameters.AddWithValue("@Id", id);
 
                 sqlCommand.Connection.Open();
                 int rowsAffected = sqlCommand.ExecuteNonQuery();

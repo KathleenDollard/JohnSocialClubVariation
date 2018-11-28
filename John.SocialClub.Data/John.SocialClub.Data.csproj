@@ -43,7 +43,7 @@
   <ItemGroup>
     <Compile Include="BusinessService\ClubMemberService.cs" />
     <Compile Include="BusinessService\IClubMemberService.cs" />
-    <Compile Include="DataAccess\ConnectionAccess.cs" />
+    <Compile Include="DataAccess\AccessBase.cs" />
     <Compile Include="DataAccess\ClubMemberAccess.cs" />
     <Compile Include="DataAccess\IClubMemberAccess.cs" />
     <Compile Include="Sql\Scripts.cs" />

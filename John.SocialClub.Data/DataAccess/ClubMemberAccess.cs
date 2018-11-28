@@ -6,34 +6,16 @@
 
 namespace John.SocialClub.Data.DataAccess
 {
+    using DataUtils;
     using John.SocialClub.Data.DataModel;
     using John.SocialClub.Data.Sql;
     using System;
     using System.Data;
     using System.Data.SqlClient;
-    using DataUtils;
 
-    public class ClubMemberAccess : ConnectionAccess, IClubMemberAccess
+    public class ClubMemberAccess : AccessBase<ClubMemberModel>
     {
-        public DataTable GetAllClubMembers() 
-            => AccessTools.GetAll(Scripts.SqlGetAllClubMembers, ConnectionString);
-
-        public DataRow GetClubMemberById(int id) 
-            => AccessTools.GetById(Scripts.sqlGetClubMemberById, ConnectionString, id);
-
-        public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand) 
-            => AccessTools.Search(string.Format(Scripts.SqlSearchClubMembers, operand), ConnectionString,
-                da =>
-                {
-                    da.SelectCommand.Parameters.AddWithValue("@Occupation", occupation ?? DBNull.Value);
-                    da.SelectCommand.Parameters.AddWithValue("@MaritalStatus", maritalStatus ?? DBNull.Value);
-                });
-
-        public bool AddClubMember(ClubMemberModel clubMember) 
-            => AccessTools.Add(Scripts.SqlUpdateClubMember, ConnectionString, 
-                clubMember,  AddCommonParameters);
-
-        private static void AddCommonParameters(SqlCommand c, ClubMemberModel m)
+        protected override void AddCommonParameters(SqlCommand c, ClubMemberModel m)
         {
             c.Parameters.AddWithValue("@FirstName", m.FirstName);
             c.Parameters.AddWithValue("@MiddleName", m.MiddleName);
@@ -46,26 +28,11 @@ namespace John.SocialClub.Data.DataAccess
             c.Parameters.AddWithValue("@NumberOfChildren", m.NumberOfChildren);
         }
 
-        public bool UpdateClubMember(ClubMemberModel clubMember)
-               => AccessTools.Update<ClubMemberModel, int>(Scripts.SqlUpdateClubMember, ConnectionString, 
-                   clubMember, AddCommonParameters);
-
-        public bool DeleteClubMember(int id)
+        protected override void FillSearchParams(SqlDataAdapter dataAdapter)
         {
-            using (var dbCommand = new SqlCommand())
-            {
-                dbCommand.Connection = new SqlConnection(ConnectionString);
-                dbCommand.CommandType = CommandType.Text;
-                dbCommand.CommandText = Scripts.sqlDeleteClubMember;
+            dataAdapter.SelectCommand.Parameters.AddWithValue("@Occupation", occupation ?? DBNull.Value);
+            dataAdapter.SelectCommand.Parameters.AddWithValue("@MaritalStatus", maritalStatus ?? DBNull.Value);
 
-                dbCommand.Parameters.AddWithValue("@Id", id);
-
-                dbCommand.Connection.Open();
-                int rowsAffected = dbCommand.ExecuteNonQuery();
-                dbCommand.Connection.Close();
-
-                return rowsAffected > 0;
-            }
         }
     }
 }
