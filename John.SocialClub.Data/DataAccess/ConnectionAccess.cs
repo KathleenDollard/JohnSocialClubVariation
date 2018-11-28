@@ -8,22 +8,11 @@ namespace John.SocialClub.Data.DataAccess
 {
     using System.Configuration;
 
-    /// <summary>
-    /// ConnectionAccess class
-    /// </summary>
     public abstract class ConnectionAccess
     {
-        /// <summary>
-        /// Gets connection string
-        /// </summary>
         protected string ConnectionString
-        {
-            get 
-            { 
-                return ConfigurationManager
+            => ConfigurationManager
                     .ConnectionStrings["SocialClubDBConnection"]
-                    .ToString(); 
-            }
-        }
+                    .ToString();
     }
 }
