@@ -12,15 +12,8 @@ namespace John.SocialClub.Data.DataAccess
     using System.Data;
     using System.Data.SqlClient;
 
-    /// <summary>
-    /// Data access class for ClubMember table
-    /// </summary>
     public class ClubMemberAccess : ConnectionAccess, IClubMemberAccess
     {
-        /// <summary>
-        /// Method to get all club members
-        /// </summary>
-        /// <returns>Data table</returns>
         public DataTable GetAllClubMembers()
         {
             var dataTable = new DataTable();
@@ -35,18 +28,13 @@ namespace John.SocialClub.Data.DataAccess
             return dataTable;
         }
 
-        /// <summary>
-        /// Method to get club member by Id
-        /// </summary>
-        /// <param name="id">member id</param>
-        /// <returns>Data row</returns>
         public DataRow GetClubMemberById(int id)
         {
             var dataTable = new DataTable();
-            DataRow dataRow;
 
             using (var dataAdapter = new SqlDataAdapter(Scripts.sqlGetClubMemberById, ConnectionString))
             {
+            DataRow dataRow;
                 // Add the parameter to the parameter collection
                 dataAdapter.SelectCommand.Parameters.AddWithValue("@Id", id);
 
@@ -60,13 +48,6 @@ namespace John.SocialClub.Data.DataAccess
             }
         }
 
-        /// <summary>
-        /// Method to search club members by multiple parameters
-        /// </summary>
-        /// <param name="occupation">occupation value</param>
-        /// <param name="maritalStatus">marital status</param>
-        /// <param name="operand">AND OR operand</param>
-        /// <returns>Data table</returns>
         public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand)
         {
             var dataTable = new DataTable();
@@ -94,11 +75,6 @@ namespace John.SocialClub.Data.DataAccess
             return dataTable;
         }
 
-        /// <summary>
-        /// Method to add new member
-        /// </summary>
-        /// <param name="clubMember">club member model</param>
-        /// <returns>true or false</returns>
         public bool AddClubMember(ClubMemberModel clubMember)
         {
             using (var sqlCommand = new SqlCommand())
@@ -128,11 +104,6 @@ namespace John.SocialClub.Data.DataAccess
             }
         }
 
-        /// <summary>
-        /// Method to update club member
-        /// </summary>
-        /// <param name="clubMember">club member</param>
-        /// <returns>true / false</returns>
         public bool UpdateClubMember(ClubMemberModel clubMember)
         {
             using (var dbCommand = new SqlCommand())
@@ -163,11 +134,6 @@ namespace John.SocialClub.Data.DataAccess
             }
         }
 
-        /// <summary>
-        /// Method to delete a club member
-        /// </summary>
-        /// <param name="id">member id</param>
-        /// <returns>true / false</returns>
         public bool DeleteClubMember(int id)
         {
             using (var dbCommand = new SqlCommand())
