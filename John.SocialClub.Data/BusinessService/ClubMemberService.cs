@@ -12,19 +12,19 @@ namespace John.SocialClub.Data.BusinessService
 
     public class ClubMemberService : IClubMemberService
     {
-        private IClubMemberAccess memberAccess;
+        private ClubMemberAccess memberAccess;
 
         public ClubMemberService() 
             => memberAccess = new ClubMemberAccess();
 
         public DataRow GetClubMemberById(int id) 
-            => memberAccess.GetClubMemberById(id);
+            => memberAccess.GetById(id);
 
         public DataTable GetAllClubMembers() 
-            => memberAccess.GetAllClubMembers();
+            => memberAccess.GetAll();
 
         public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand) 
-            => memberAccess.SearchClubMembers(occupation, maritalStatus, operand);
+            => memberAccess.Search(occupation, maritalStatus, operand);
 
         /// <summary>
         /// Service method to create new member
@@ -32,12 +32,12 @@ namespace John.SocialClub.Data.BusinessService
         /// <param name="clubMember">club member model</param>
         /// <returns>true or false</returns>
         public bool RegisterClubMember(ClubMemberModel clubMember) 
-            => memberAccess.AddClubMember(clubMember);
+            => memberAccess.Add(clubMember);
 
         public bool UpdateClubMember(ClubMemberModel clubMember) 
-            => memberAccess.UpdateClubMember(clubMember);
+            => memberAccess.Update(clubMember);
 
         public bool DeleteClubMember(int id) 
-            => memberAccess.DeleteClubMember(id);
+            => memberAccess.Delete(id);
     }
 }
