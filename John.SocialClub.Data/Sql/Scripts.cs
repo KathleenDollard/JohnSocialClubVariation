@@ -28,7 +28,7 @@ namespace John.SocialClub.Data.Sql
         /// <summary>
         /// sql to insert a club member details
         /// </summary>
-        public static readonly string SqlInsertClubMember = "Insert Into" +
+        public static readonly string SqlUpdateClubMember = "Insert Into" +
             " ClubMember( GivenName, MiddleName, LastName,  DateOfBirth, Occupation, MaritalStatus, HealthStatus, Salary, NumberOfChildren)" +
             " Values(@GivenName, @MiddleName, @LastName,  @DateOfBirth, @Occupation, @MaritalStatus, @HealthStatus, @Salary, @NumberOfChildren)";
 

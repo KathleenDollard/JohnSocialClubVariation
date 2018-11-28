@@ -29,58 +29,30 @@ namespace John.SocialClub.Data.DataAccess
                     da.SelectCommand.Parameters.AddWithValue("@MaritalStatus", maritalStatus ?? DBNull.Value);
                 });
 
-        public bool AddClubMember(ClubMemberModel clubMember)
+        public bool AddClubMember(ClubMemberModel clubMember) 
+            => AccessTools.Add(Scripts.SqlUpdateClubMember, ConnectionString, 
+                clubMember,  AddCommonParameters);
+
+        private static void AddCommonParameters(SqlCommand c, ClubMemberModel m)
         {
-            using (var sqlCommand = new SqlCommand())
-            {
-                sqlCommand.Connection = new SqlConnection(ConnectionString);
-                sqlCommand.CommandType = CommandType.Text;
-                sqlCommand.CommandText = Scripts.SqlInsertClubMember;
-
-                sqlCommand.Parameters.AddWithValue("@FirstName", clubMember.FirstName);
-                sqlCommand.Parameters.AddWithValue("@MiddleName", clubMember.MiddleName);
-                sqlCommand.Parameters.AddWithValue("@LastName", clubMember.LastName);
-                sqlCommand.Parameters.AddWithValue("@DateOfBirth", clubMember.DateOfBirth.ToShortDateString());
-                sqlCommand.Parameters.AddWithValue("@Occupation", (int)clubMember.Occupation);
-                sqlCommand.Parameters.AddWithValue("@MaritalStatus", (int)clubMember.MaritalStatus);
-                sqlCommand.Parameters.AddWithValue("@HealthStatus", (int)clubMember.HealthStatus);
-                sqlCommand.Parameters.AddWithValue("@Salary", clubMember.Salary);
-                sqlCommand.Parameters.AddWithValue("@NumberOfChildren", clubMember.NumberOfChildren);
-
-                sqlCommand.Connection.Open();
-                int rowsAffected = sqlCommand.ExecuteNonQuery();
-                sqlCommand.Connection.Close();
-
-                return rowsAffected > 0;
-            }
+            c.Parameters.AddWithValue("@FirstName", m.FirstName);
+            c.Parameters.AddWithValue("@MiddleName", m.MiddleName);
+            c.Parameters.AddWithValue("@LastName", m.LastName);
+            c.Parameters.AddWithValue("@DateOfBirth", m.DateOfBirth.ToShortDateString());
+            c.Parameters.AddWithValue("@Occupation", (int)m.Occupation);
+            c.Parameters.AddWithValue("@MaritalStatus", (int)m.MaritalStatus);
+            c.Parameters.AddWithValue("@HealthStatus", (int)m.HealthStatus);
+            c.Parameters.AddWithValue("@Salary", m.Salary);
+            c.Parameters.AddWithValue("@NumberOfChildren", m.NumberOfChildren);
         }
 
         public bool UpdateClubMember(ClubMemberModel clubMember)
-        {
-            using (var dbCommand = new SqlCommand())
-            {
-                dbCommand.Connection = new SqlConnection(ConnectionString);
-                dbCommand.CommandType = CommandType.Text;
-                dbCommand.CommandText = Scripts.sqlUpdateClubMember;
-
-                dbCommand.Parameters.AddWithValue("@FirstName", clubMember.FirstName);
-                dbCommand.Parameters.AddWithValue("@MiddleName", clubMember.MiddleName);
-                dbCommand.Parameters.AddWithValue("@LastName", clubMember.LastName);
-                dbCommand.Parameters.AddWithValue("@DateOfBirth", clubMember.DateOfBirth.ToShortDateString());
-                dbCommand.Parameters.AddWithValue("@Occupation", (int)clubMember.Occupation);
-                dbCommand.Parameters.AddWithValue("@MaritalStatus", (int)clubMember.MaritalStatus);
-                dbCommand.Parameters.AddWithValue("@HealthStatus", (int)clubMember.HealthStatus);
-                dbCommand.Parameters.AddWithValue("@Salary", clubMember.Salary);
-                dbCommand.Parameters.AddWithValue("@NumberOfChildren", clubMember.NumberOfChildren);
-                dbCommand.Parameters.AddWithValue("@Id", clubMember.Id);
-
-                dbCommand.Connection.Open();
-                int rowsAffected = dbCommand.ExecuteNonQuery();
-                dbCommand.Connection.Close();
-
-                return rowsAffected > 0;
-            }
-        }
+               => AccessTools.Update(Scripts.SqlUpdateClubMember, ConnectionString, clubMember,
+                (c, m) =>
+                {
+                    AddCommonParameters(c, m);
+                    c.Parameters.AddWithValue("@Id", clubMember.Id);
+                });
 
         public bool DeleteClubMember(int id)
         {

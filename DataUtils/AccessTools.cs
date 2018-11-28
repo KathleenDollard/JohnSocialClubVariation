@@ -41,5 +41,42 @@ namespace DataUtils
             }
             return dataTable;
         }
+
+        public static bool Add<T>(string script, string connectionString, T model, Action<SqlCommand, T> fillParams)
+        {
+            using (var sqlCommand = new SqlCommand())
+            {
+                sqlCommand.Connection = new SqlConnection(connectionString);
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.CommandText = script;
+
+                fillParams(sqlCommand, model);
+
+                sqlCommand.Connection.Open();
+                int rowsAffected = sqlCommand.ExecuteNonQuery();
+                sqlCommand.Connection.Close();
+
+                return rowsAffected > 0;
+            }
+        }
+
+        public static bool Update<T>(string script, string connectionString, 
+            T model, Action<SqlCommand, T> fillParams)
+        {
+            using (var sqlCommand = new SqlCommand())
+            {
+                sqlCommand.Connection = new SqlConnection(connectionString);
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.CommandText = script;
+
+                fillParams(sqlCommand, model);
+
+                sqlCommand.Connection.Open();
+                int rowsAffected = sqlCommand.ExecuteNonQuery();
+                sqlCommand.Connection.Close();
+
+                return rowsAffected > 0;
+            }
+        }
     }
 }
