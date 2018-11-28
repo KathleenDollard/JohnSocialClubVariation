@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AccessTools.cs" />
     <Compile Include="IHasPrimaryKey.cs" />
+    <Compile Include="ISearchDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

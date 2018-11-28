@@ -20,7 +20,7 @@ namespace John.SocialClub.Data.DataAccess
                     .ConnectionStrings["SocialClubDBConnection"]
                     .ToString();
 
-        protected abstract void FillSearchParams(SqlDataAdapter dataAdapter);
+        protected abstract void FillSearchParams(SqlDataAdapter dataAdapter, ISearchDefinition<TModel> searchDefinition);
         protected abstract void AddCommonParameters(SqlCommand c, TModel m);
 
         public DataTable GetAll()

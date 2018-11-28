@@ -23,5 +23,11 @@ namespace John.SocialClub.Data.DataModel
         public HealthStatus HealthStatus { get; set; }
         public decimal Salary { get; set; }
         public int NumberOfChildren { get; set; }
+
+        public class SearchDefinition  : ISearchDefinition<ClubMemberModel >
+        {
+            public Occupation? Occupation { get; set; }
+            public MaritalStatus? MaritalStatus { get; set; }
+        }
     }
 }
