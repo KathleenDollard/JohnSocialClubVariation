@@ -11,18 +11,12 @@ namespace John.SocialClub.Data.DataAccess
     using System;
     using System.Data;
     using System.Data.SqlClient;
+    using DataUtils;
 
     public class ClubMemberAccess : ConnectionAccess, IClubMemberAccess
     {
-        public DataTable GetAllClubMembers()
-        {
-            var dataTable = new DataTable();
-            using (var dataAdapter = new SqlDataAdapter(Scripts.SqlGetAllClubMembers, ConnectionString))
-            {
-                dataAdapter.Fill(dataTable);
-            }
-            return dataTable;
-        }
+        public DataTable GetAllClubMembers() 
+            => AccessTools.GetAll(Scripts.SqlGetAllClubMembers, ConnectionString);
 
         public DataRow GetClubMemberById(int id)
         {
