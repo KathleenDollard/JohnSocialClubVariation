@@ -60,8 +60,9 @@ namespace DataUtils
             }
         }
 
-        public static bool Update<T>(string script, string connectionString, 
-            T model, Action<SqlCommand, T> fillParams)
+        public static bool Update<T, TKey>(string script, string connectionString, 
+                T model, Action<SqlCommand, T> fillParams)
+            where T : IHasPrimaryKey<TKey>
         {
             using (var sqlCommand = new SqlCommand())
             {
@@ -70,6 +71,7 @@ namespace DataUtils
                 sqlCommand.CommandText = script;
 
                 fillParams(sqlCommand, model);
+                sqlCommand.Parameters.AddWithValue("@Id", model.Id);
 
                 sqlCommand.Connection.Open();
                 int rowsAffected = sqlCommand.ExecuteNonQuery();

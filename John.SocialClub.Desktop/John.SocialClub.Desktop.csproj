@@ -56,6 +56,7 @@
     <Compile Include="Forms\Membership\Manage.Designer.cs">
       <DependentUpon>Manage.cs</DependentUpon>
     </Compile>
+    <Compile Include="IHasPrimaryKey.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>

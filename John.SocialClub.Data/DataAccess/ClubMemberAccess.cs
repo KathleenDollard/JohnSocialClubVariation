@@ -47,12 +47,8 @@ namespace John.SocialClub.Data.DataAccess
         }
 
         public bool UpdateClubMember(ClubMemberModel clubMember)
-               => AccessTools.Update(Scripts.SqlUpdateClubMember, ConnectionString, clubMember,
-                (c, m) =>
-                {
-                    AddCommonParameters(c, m);
-                    c.Parameters.AddWithValue("@Id", clubMember.Id);
-                });
+               => AccessTools.Update<ClubMemberModel, int>(Scripts.SqlUpdateClubMember, ConnectionString, 
+                   clubMember, AddCommonParameters);
 
         public bool DeleteClubMember(int id)
         {

@@ -7,9 +7,10 @@
 namespace John.SocialClub.Data.DataModel
 {
     using System;
+    using DataUtils;
     using John.SocialClub.Data.Enum;
 
-    public class ClubMemberModel
+    public class ClubMemberModel : IHasPrimaryKey<int>
     {
         public int Id { get; set; }
 
