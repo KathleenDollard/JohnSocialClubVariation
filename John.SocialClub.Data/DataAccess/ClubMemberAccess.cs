@@ -18,19 +18,8 @@ namespace John.SocialClub.Data.DataAccess
         public DataTable GetAllClubMembers() 
             => AccessTools.GetAll(Scripts.SqlGetAllClubMembers, ConnectionString);
 
-        public DataRow GetClubMemberById(int id)
-        {
-            var dataTable = new DataTable();
-            using (var dataAdapter = new SqlDataAdapter(Scripts.sqlGetClubMemberById, ConnectionString))
-            {
-                dataAdapter.SelectCommand.Parameters.AddWithValue("@Id", id);
-                dataAdapter.Fill(dataTable);
-                DataRow dataRow = dataTable.Rows.Count > 0 
-                    ? dataTable.Rows[0] 
-                    : null;
-                return dataRow;
-            }
-        }
+        public DataRow GetClubMemberById(int id) 
+            => AccessTools.GetById(Scripts.sqlGetClubMemberById, id, ConnectionString);
 
         public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand)
         {
