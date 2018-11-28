@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace DataUtils
@@ -15,7 +16,7 @@ namespace DataUtils
             return dataTable;
         }
 
-        public static DataRow GetById<T>(string script, T id, string connectionString)
+        public static DataRow GetById<T>(string script, string connectionString, T id)
             where T : struct
         {
             var dataTable = new DataTable();
@@ -28,6 +29,17 @@ namespace DataUtils
                     : null;
                 return dataRow;
             }
+        }
+
+        public static DataTable Search(string script, string connectionString, Action<SqlDataAdapter> fillParams)
+        {
+            var dataTable = new DataTable();
+            using (var dataAdapter = new SqlDataAdapter(script, connectionString))
+            {
+                fillParams(dataAdapter);
+                dataAdapter.Fill(dataTable);
+            }
+            return dataTable;
         }
     }
 }

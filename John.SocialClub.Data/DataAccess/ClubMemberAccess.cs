@@ -19,19 +19,15 @@ namespace John.SocialClub.Data.DataAccess
             => AccessTools.GetAll(Scripts.SqlGetAllClubMembers, ConnectionString);
 
         public DataRow GetClubMemberById(int id) 
-            => AccessTools.GetById(Scripts.sqlGetClubMemberById, id, ConnectionString);
+            => AccessTools.GetById(Scripts.sqlGetClubMemberById, ConnectionString, id);
 
-        public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand)
-        {
-            var dataTable = new DataTable();
-            using (var sqlDataAdapter = new SqlDataAdapter(string.Format(Scripts.SqlSearchClubMembers, operand), ConnectionString))
-            {
-                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@Occupation", occupation == null ? DBNull.Value : occupation);
-                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("@MaritalStatus", maritalStatus == null ? DBNull.Value : maritalStatus);
-                sqlDataAdapter.Fill(dataTable);
-            }
-            return dataTable;
-        }
+        public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand) 
+            => AccessTools.Search(string.Format(Scripts.SqlSearchClubMembers, operand), ConnectionString,
+                da =>
+                {
+                    da.SelectCommand.Parameters.AddWithValue("@Occupation", occupation ?? DBNull.Value);
+                    da.SelectCommand.Parameters.AddWithValue("@MaritalStatus", maritalStatus ?? DBNull.Value);
+                });
 
         public bool AddClubMember(ClubMemberModel clubMember)
         {
