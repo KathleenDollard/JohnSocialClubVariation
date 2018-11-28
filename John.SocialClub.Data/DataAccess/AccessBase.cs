@@ -9,12 +9,22 @@ namespace John.SocialClub.Data.DataAccess
     using DataUtils;
     using John.SocialClub.Data.Sql;
     using System;
+    using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Linq;
 
-    public abstract class AccessBase<TModel>
+    public abstract class AccessBase<TModel, TKey, TSearchDef>
+        where TModel : AccessBase<TModel, TKey, TSearchDef>, IHasPrimaryKey<TKey>
+        where TKey : struct
+        where TSearchDef : ISearchDefinition<TModel>
     {
+        private readonly string tableName;
+
+        protected AccessBase(string tableName) 
+            => this.tableName = tableName;
+
         protected string ConnectionString
             => ConfigurationManager
                     .ConnectionStrings["SocialClubDBConnection"]
@@ -22,27 +32,57 @@ namespace John.SocialClub.Data.DataAccess
 
         protected abstract void FillSearchParams(SqlDataAdapter dataAdapter, ISearchDefinition<TModel> searchDefinition);
         protected abstract void AddCommonParameters(SqlCommand c, TModel m);
+        protected abstract Dictionary<string, Func<TModel, object>> FieldList { get; }
 
         public DataTable GetAll()
-          => AccessTools.GetAll(Scripts.SqlGetAll, ConnectionString);
+          => AccessTools.GetAll(SelectAllScript, ConnectionString);
 
         public DataRow GetById(int id)
-            => AccessTools.GetById(Scripts.SqlGetById, ConnectionString, id);
+            => AccessTools.GetById(SelectByIdScript, ConnectionString, id);
 
-        public DataTable Search(object occupation, object maritalStatus, string operand)
-            => AccessTools.Search(string.Format(Scripts.SqlSearch, operand), ConnectionString,
-                FillSearchParams);
+        public DataTable Search(TSearchDef searchDef, string operand)
+            => AccessTools.Search<TModel, TSearchDef>(string.Format(SearchScript , operand), ConnectionString,
+                searchDef, FillSearchParams);
 
         public bool Add(TModel clubMember)
-            => AccessTools.Add(Scripts.SqlUpdate, ConnectionString,
+            => AccessTools.Add(InsertScript, ConnectionString,
                 clubMember, AddCommonParameters);
 
 
         public bool Update(TModel clubMember)
-               => AccessTools.Update<TModel, int>(Scripts.SqlUpdate, ConnectionString,
+               => AccessTools.Update<TModel, TKey>(UpdateScript, ConnectionString,
                    clubMember, AddCommonParameters);
 
         public bool Delete(int id)
-            => AccessTools.Delete(Scripts.sqlDelete, ConnectionString, id);
+            => AccessTools.Delete(DeleteScript, ConnectionString, id);
+
+        protected virtual string SelectAllScript
+            => "Select"
+                + string.Join(", ", FieldList.Select(prop => prop.Key))
+                + " From " + tableName;
+
+        protected virtual string SelectByIdScript
+            => SelectAllScript + " Where Id = @Id";
+
+        protected virtual string InsertScript
+            => "Insert Into "
+            + tableName + "(" + string.Join(", ", FieldList.Select(prop => prop.Key)) + ")"
+            + "Values(" + string.Join(", ", FieldList.Select(prop => "@" + prop.Key)) + ")";
+
+        protected virtual string UpdateScript
+            => "Update " + tableName + " Set "
+            + string.Join(", ", FieldList.Select(prop => $"[{prop.Key}] = @{prop.Key}")) + ")"
+            + " Where Id = @Id";
+
+        protected virtual string DeleteScript
+            => $"Delete From {tableName} Where (Id = @Id)";
+
+        protected virtual string SearchScript
+            => SelectAllScript
+            + " Where (" + string.Join(" {0} ",
+                 typeof(TSearchDef)
+                  .GetProperties()
+                  .Select(prop => $"(@{prop.Name} Is NULL OR @{prop.Name} = {prop.Name})")) ;
+
     }
 }

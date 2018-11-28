@@ -9,23 +9,41 @@ namespace John.SocialClub.Data.DataAccess
     using DataUtils;
     using John.SocialClub.Data.DataModel;
     using System;
+    using System.Collections.Generic;
     using System.Data.SqlClient;
+    using System.Linq;
 
-    public class ClubMemberAccess : AccessBase<ClubMemberModel>
+    public class ClubMemberAccess : AccessBase<ClubMemberModel, int, ClubMemberModel.SearchDefinition >
     {
+        public ClubMemberAccess() : base(nameof(ClubMemberAccess))
+        { }
 
-        protected override void AddCommonParameters(SqlCommand c, ClubMemberModel m)
+        private Dictionary<string, Func<ClubMemberModel, object>> properties
+            = new Dictionary<string, Func<ClubMemberModel, object>>()
+            {
+                ["FirstName"] = m => m.FirstName,
+                ["MiddleName"] = m => m.MiddleName,
+                ["LastName"] = m => m.LastName,
+                ["DateOfBirth"] = m => m.DateOfBirth.ToShortDateString(),
+                ["Occupation"] = m => (int)m.Occupation,
+                ["MaritalStatus"] = m => (int)m.MaritalStatus,
+                ["HealthStatus"] = m => (int)m.HealthStatus,
+                ["Salary"] = m => m.Salary,
+                ["NumberOfChildren"] = m => m.NumberOfChildren
+            };
+
+        protected override Dictionary<string, Func<ClubMemberModel, object>> FieldList
+            => properties;
+
+        protected override void AddCommonParameters(SqlCommand command, ClubMemberModel model)
         {
-            c.Parameters.AddWithValue("@FirstName", m.FirstName);
-            c.Parameters.AddWithValue("@MiddleName", m.MiddleName);
-            c.Parameters.AddWithValue("@LastName", m.LastName);
-            c.Parameters.AddWithValue("@DateOfBirth", m.DateOfBirth.ToShortDateString());
-            c.Parameters.AddWithValue("@Occupation", (int)m.Occupation);
-            c.Parameters.AddWithValue("@MaritalStatus", (int)m.MaritalStatus);
-            c.Parameters.AddWithValue("@HealthStatus", (int)m.HealthStatus);
-            c.Parameters.AddWithValue("@Salary", m.Salary);
-            c.Parameters.AddWithValue("@NumberOfChildren", m.NumberOfChildren);
+            foreach (var propPair in properties)
+            {
+                command.Parameters.AddWithValue("@" + propPair.Key, propPair.Value(model));
+            }
         }
+
+
 
         protected override void FillSearchParams(SqlDataAdapter dataAdapter,
             ISearchDefinition<ClubMemberModel> searchDef)

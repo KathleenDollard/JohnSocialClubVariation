@@ -16,8 +16,8 @@ namespace DataUtils
             return dataTable;
         }
 
-        public static DataRow GetById<T>(string script, string connectionString, T id)
-            where T : struct
+        public static DataRow GetById<TKey>(string script, string connectionString, TKey id)
+            where TKey : struct
         {
             var dataTable = new DataTable();
             using (var dataAdapter = new SqlDataAdapter(script, connectionString))
@@ -31,18 +31,21 @@ namespace DataUtils
             }
         }
 
-        public static DataTable Search(string script, string connectionString, Action<SqlDataAdapter> fillParams)
+        public static DataTable Search<TModel, TSearchDef>(string script, string connectionString, 
+            TSearchDef searchDef, Action<SqlDataAdapter, TSearchDef> fillParams)
+            where TSearchDef : ISearchDefinition<TModel>
         {
             var dataTable = new DataTable();
             using (var dataAdapter = new SqlDataAdapter(script, connectionString))
             {
-                fillParams(dataAdapter);
+                fillParams(dataAdapter, searchDef);
                 dataAdapter.Fill(dataTable);
             }
             return dataTable;
         }
 
-        public static bool Add<T>(string script, string connectionString, T model, Action<SqlCommand, T> fillParams)
+        public static bool Add<TModel>(string script, string connectionString, 
+            TModel model, Action<SqlCommand, TModel> fillParams)
         {
             using (var sqlCommand = new SqlCommand())
             {
