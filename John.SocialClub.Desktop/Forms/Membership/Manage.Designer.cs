@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tab = new System.Windows.Forms.TabControl();
             this.tabRegistration = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -56,6 +56,8 @@
             this.lblDateOfBirth = new System.Windows.Forms.Label();
             this.lblName = new System.Windows.Forms.Label();
             this.tabSearchManage = new System.Windows.Forms.TabPage();
+            this.txt2LastName = new System.Windows.Forms.TextBox();
+            this.txt2MiddleName = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.lbl2NoOfChildren = new System.Windows.Forms.Label();
@@ -92,8 +94,6 @@
             this.dataGridViewMembers = new System.Windows.Forms.DataGridView();
             this.Header = new System.Windows.Forms.TextBox();
             this.PrintReport = new System.Drawing.Printing.PrintDocument();
-            this.txt2MiddleName = new System.Windows.Forms.TextBox();
-            this.txt2LastName = new System.Windows.Forms.TextBox();
             this.tab.SuspendLayout();
             this.tabRegistration.SuspendLayout();
             this.tabControl2.SuspendLayout();
@@ -447,6 +447,24 @@
             this.tabSearchManage.Size = new System.Drawing.Size(2054, 899);
             this.tabSearchManage.TabIndex = 1;
             this.tabSearchManage.Text = "Search / Manage Members";
+            // 
+            // txt2LastName
+            // 
+            this.txt2LastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txt2LastName.Location = new System.Drawing.Point(1740, 336);
+            this.txt2LastName.Margin = new System.Windows.Forms.Padding(6);
+            this.txt2LastName.Name = "txt2LastName";
+            this.txt2LastName.Size = new System.Drawing.Size(246, 35);
+            this.txt2LastName.TabIndex = 41;
+            // 
+            // txt2MiddleName
+            // 
+            this.txt2MiddleName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txt2MiddleName.Location = new System.Drawing.Point(1649, 336);
+            this.txt2MiddleName.Margin = new System.Windows.Forms.Padding(6);
+            this.txt2MiddleName.Name = "txt2MiddleName";
+            this.txt2MiddleName.Size = new System.Drawing.Size(79, 35);
+            this.txt2MiddleName.TabIndex = 40;
             // 
             // label10
             // 
@@ -814,14 +832,14 @@
             this.dataGridViewMembers.AllowUserToAddRows = false;
             this.dataGridViewMembers.AllowUserToOrderColumns = true;
             this.dataGridViewMembers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewMembers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewMembers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewMembers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMembers.Location = new System.Drawing.Point(6, 319);
             this.dataGridViewMembers.Margin = new System.Windows.Forms.Padding(6);
@@ -853,24 +871,6 @@
             // 
             this.PrintReport.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintDocument_PrintPage);
             // 
-            // txt2MiddleName
-            // 
-            this.txt2MiddleName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt2MiddleName.Location = new System.Drawing.Point(1649, 336);
-            this.txt2MiddleName.Margin = new System.Windows.Forms.Padding(6);
-            this.txt2MiddleName.Name = "txt2MiddleName";
-            this.txt2MiddleName.Size = new System.Drawing.Size(79, 35);
-            this.txt2MiddleName.TabIndex = 40;
-            // 
-            // txt2LastName
-            // 
-            this.txt2LastName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txt2LastName.Location = new System.Drawing.Point(1740, 336);
-            this.txt2LastName.Margin = new System.Windows.Forms.Padding(6);
-            this.txt2LastName.Name = "txt2LastName";
-            this.txt2LastName.Size = new System.Drawing.Size(246, 35);
-            this.txt2LastName.TabIndex = 41;
-            // 
             // Manage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -879,7 +879,6 @@
             this.ClientSize = new System.Drawing.Size(2100, 1033);
             this.Controls.Add(this.Header);
             this.Controls.Add(this.tab);
-            this.IsMdiContainer = true;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Manage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

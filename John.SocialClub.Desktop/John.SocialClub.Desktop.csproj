@@ -96,6 +96,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataUtils\DataUtils.csproj">
+      <Project>{6aa249ea-82bf-443b-8fc6-a15de504dab2}</Project>
+      <Name>DataUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\John.SocialClub.Data\John.SocialClub.Data.csproj">
       <Project>{A0055EB5-0661-4CA3-9F07-0B9345553719}</Project>
       <Name>John.SocialClub.Data</Name>
