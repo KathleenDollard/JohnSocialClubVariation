@@ -133,7 +133,7 @@ namespace John.SocialClub.Desktop.Forms.Membership
         /// </summary>
         private void ResetUpdate()
         {
-            txt2Name.Text = string.Empty;
+            txt2FirstName.Text = string.Empty;
             txt2Salary.Text = string.Empty;
             txt2NoOfChildren.Text = string.Empty;
             cmb2Occupation.SelectedIndex = -1;
@@ -180,7 +180,7 @@ namespace John.SocialClub.Desktop.Forms.Membership
         {
             errorMessage = string.Empty;
 
-            if (txt2Name.Text.Trim() == string.Empty)
+            if (txt2FirstName.Text.Trim() == string.Empty)
             {
                 AddErrorMessage(Resources.Registration_Name_Required_Text);
             }
@@ -423,42 +423,42 @@ namespace John.SocialClub.Desktop.Forms.Membership
         /// <param name="e">event data</param>
         private void DataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            try
-            {
-                if (e.ColumnIndex == 2)
-                {
-                    e.Value = string.Format("{0:dd/MM/yyyy}", (DateTime)e.Value);
-                }
+            //try
+            //{
+            //    if (e.ColumnIndex == 2)
+            //    {
+            //        e.Value = string.Format("{0:dd/MM/yyyy}", (DateTime)e.Value);
+            //    }
 
-                if (e.ColumnIndex == 3)
-                {
-                    e.Value = Enum.GetName(typeof(Occupation), e.Value).ToString();
-                }
+            //    if (e.ColumnIndex == 3)
+            //    {
+            //        e.Value = Enum.GetName(typeof(Occupation), e.Value).ToString();
+            //    }
 
-                if (e.ColumnIndex == 4)
-                {
-                    e.Value = Enum.GetName(typeof(MaritalStatus), e.Value).ToString();
-                }
+            //    if (e.ColumnIndex == 4)
+            //    {
+            //        e.Value = Enum.GetName(typeof(MaritalStatus), e.Value).ToString();
+            //    }
 
-                if (e.ColumnIndex == 5)
-                {
-                    e.Value = Enum.GetName(typeof(HealthStatus), e.Value).ToString();
-                }
+            //    if (e.ColumnIndex == 5)
+            //    {
+            //        e.Value = Enum.GetName(typeof(HealthStatus), e.Value).ToString();
+            //    }
 
-                if (e.ColumnIndex == 6)
-                {
-                    e.Value = Convert.ToDecimal(e.Value) == 0 ? string.Empty : e.Value;
-                }
+            //    if (e.ColumnIndex == 6)
+            //    {
+            //        e.Value = Convert.ToDecimal(e.Value) == 0 ? string.Empty : e.Value;
+            //    }
 
-                if (e.ColumnIndex == 7)
-                {
-                    e.Value = Convert.ToInt16(e.Value) == 0 ? string.Empty : e.Value;
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowErrorMessage(ex);
-            }            
+            //    if (e.ColumnIndex == 7)
+            //    {
+            //        e.Value = Convert.ToInt16(e.Value) == 0 ? string.Empty : e.Value;
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    ShowErrorMessage(ex);
+            //}            
         }     
 
         /// <summary>
@@ -741,7 +741,9 @@ namespace John.SocialClub.Desktop.Forms.Membership
 
                     DataRow dataRow = clubMemberService.GetClubMemberById(memberId);
 
-                    txt2Name.Text = dataRow["Name"].ToString();
+                    txt2FirstName.Text = dataRow["FirstName"].ToString();
+                    txt2MiddleName.Text = dataRow["MiddleName"].ToString();
+                    txt2LastName.Text = dataRow["LastName"].ToString();
                     dt2DateOfBirth.Value = Convert.ToDateTime(dataRow["DateOfBirth"]);
                     cmb2Occupation.SelectedItem = (Occupation)dataRow["Occupation"];
                     cmb2MaritalStatus.SelectedItem = (MaritalStatus)dataRow["MaritalStatus"];

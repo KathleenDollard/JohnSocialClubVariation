@@ -58,7 +58,7 @@ namespace John.SocialClub.Data.DataAccess
             => AccessTools.Delete(DeleteScript, ConnectionString, id);
 
         protected virtual string SelectAllScript
-            => "Select"
+            => "Select "
                 + string.Join(", ", FieldList.Select(prop => prop.Key))
                 + " From " + tableName;
 

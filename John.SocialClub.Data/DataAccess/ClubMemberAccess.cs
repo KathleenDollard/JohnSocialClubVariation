@@ -15,12 +15,13 @@ namespace John.SocialClub.Data.DataAccess
 
     public class ClubMemberAccess : AccessBase<ClubMemberAccess, ClubMemberModel, int, ClubMemberModel.SearchDefinition >
     {
-        public ClubMemberAccess() : base(nameof(ClubMemberAccess))
+        public ClubMemberAccess() : base("ClubMember")
         { }
 
         private Dictionary<string, Func<ClubMemberModel, object>> properties
             = new Dictionary<string, Func<ClubMemberModel, object>>()
             {
+                ["Id"] = m => m.Id,
                 ["FirstName"] = m => m.FirstName,
                 ["MiddleName"] = m => m.MiddleName,
                 ["LastName"] = m => m.LastName,
