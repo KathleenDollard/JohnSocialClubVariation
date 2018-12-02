@@ -15,8 +15,9 @@ namespace John.SocialClub.Data.DataAccess
     using System.Data.SqlClient;
     using System.Linq;
 
-    public abstract class AccessBase<TModel, TKey, TSearchDef>
-        where TModel : AccessBase<TModel, TKey, TSearchDef>, IHasPrimaryKey<TKey>
+    public abstract class AccessBase<TAccess, TModel, TKey, TSearchDef>
+        where TAccess : AccessBase<TAccess, TModel, TKey, TSearchDef>
+        where TModel : IHasPrimaryKey<TKey>
         where TKey : struct
         where TSearchDef : ISearchDefinition<TModel>
     {
@@ -30,7 +31,7 @@ namespace John.SocialClub.Data.DataAccess
                     .ConnectionStrings["SocialClubDBConnection"]
                     .ToString();
 
-        protected abstract void FillSearchParams(SqlDataAdapter dataAdapter, ISearchDefinition<TModel> searchDefinition);
+        protected abstract void FillSearchParams(SqlDataAdapter dataAdapter, TSearchDef searchDefinition);
         protected abstract void AddCommonParameters(SqlCommand c, TModel m);
         protected abstract Dictionary<string, Func<TModel, object>> FieldList { get; }
 

@@ -7,6 +7,5 @@
 namespace DataUtils
 {
     public interface ISearchDefinition<TModel>
-    {
-    }
+    { }
 }

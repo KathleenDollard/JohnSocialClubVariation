@@ -13,7 +13,7 @@ namespace John.SocialClub.Data.DataAccess
     using System.Data.SqlClient;
     using System.Linq;
 
-    public class ClubMemberAccess : AccessBase<ClubMemberModel, int, ClubMemberModel.SearchDefinition >
+    public class ClubMemberAccess : AccessBase<ClubMemberAccess, ClubMemberModel, int, ClubMemberModel.SearchDefinition >
     {
         public ClubMemberAccess() : base(nameof(ClubMemberAccess))
         { }
@@ -43,10 +43,8 @@ namespace John.SocialClub.Data.DataAccess
             }
         }
 
-
-
         protected override void FillSearchParams(SqlDataAdapter dataAdapter,
-            ISearchDefinition<ClubMemberModel> searchDef)
+           ClubMemberModel.SearchDefinition searchDef)
         {
             if (!(searchDef is ClubMemberModel.SearchDefinition clubMemberSearchDef ))
             {

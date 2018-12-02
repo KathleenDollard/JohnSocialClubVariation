@@ -28,6 +28,7 @@ namespace John.SocialClub.Data.DataModel
         {
             public Occupation? Occupation { get; set; }
             public MaritalStatus? MaritalStatus { get; set; }
+            public string Operand { get; set; }
         }
     }
 }

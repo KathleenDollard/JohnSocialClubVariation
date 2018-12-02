@@ -6,38 +6,48 @@
 
 namespace John.SocialClub.Data.BusinessService
 {
-    using System.Data;
     using John.SocialClub.Data.DataAccess;
     using John.SocialClub.Data.DataModel;
+    using John.SocialClub.Data.Enum;
+    using System;
+    using System.Data;
 
     public class ClubMemberService : IClubMemberService
     {
         private ClubMemberAccess memberAccess;
 
-        public ClubMemberService() 
+        public ClubMemberService()
             => memberAccess = new ClubMemberAccess();
 
-        public DataRow GetClubMemberById(int id) 
+        public DataRow GetClubMemberById(int id)
             => memberAccess.GetById(id);
 
-        public DataTable GetAllClubMembers() 
+        public DataTable GetAllClubMembers()
             => memberAccess.GetAll();
 
-        public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand) 
-            => memberAccess.Search(occupation, maritalStatus, operand);
+        public DataTable SearchClubMembers(object occupation, object maritalStatus, string operand)
+            => memberAccess.Search(new ClubMemberModel.SearchDefinition()
+            {
+                Occupation = occupation is Occupation 
+                            ? (Occupation)occupation
+                            : throw new InvalidOperationException(),
+                MaritalStatus = maritalStatus is MaritalStatus
+                            ? (MaritalStatus)maritalStatus
+                            : throw new InvalidOperationException()
+            },  operand);
 
         /// <summary>
         /// Service method to create new member
         /// </summary>
         /// <param name="clubMember">club member model</param>
         /// <returns>true or false</returns>
-        public bool RegisterClubMember(ClubMemberModel clubMember) 
+        public bool RegisterClubMember(ClubMemberModel clubMember)
             => memberAccess.Add(clubMember);
 
-        public bool UpdateClubMember(ClubMemberModel clubMember) 
+        public bool UpdateClubMember(ClubMemberModel clubMember)
             => memberAccess.Update(clubMember);
 
-        public bool DeleteClubMember(int id) 
+        public bool DeleteClubMember(int id)
             => memberAccess.Delete(id);
     }
 }
